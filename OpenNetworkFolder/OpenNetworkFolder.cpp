@@ -65,6 +65,15 @@ BOOL COpenNetworkFolderApp::InitInstance()
 	}
 	for (int i = 1; i < __argc; ++i)
 	{
+		//HANDLE hFile = CreateFile(__targv[i],
+		//	GENERIC_READ,
+		//	FILE_SHARE_READ | FILE_SHARE_WRITE,
+		//	NULL,
+		//	OPEN_EXISTING,
+		//	FILE_FLAG_BACKUP_SEMANTICS | FILE_ATTRIBUTE_DIRECTORY,
+		//	NULL);
+		//CloseHandle(hFile);
+
 		LPTSTR p = _tcsdup(__targv[i]);
 		::CreateThread(NULL,
 			0,

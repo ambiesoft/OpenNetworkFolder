@@ -5,3 +5,6 @@ OpenNetworkFolder.v12.suo
 OpenNetworkFolder/Debug/
 OpenNetworkFolder/Release/
 
+OpenNetworkFolder/OpenNetworkFolder.vcxproj.user
+ipch/
+
