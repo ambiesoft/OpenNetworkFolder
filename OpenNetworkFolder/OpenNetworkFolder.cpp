@@ -1,4 +1,4 @@
-
+﻿
 // OpenNetworkFolder.cpp : Defines the class behaviors for the application.
 //
 
@@ -46,6 +46,105 @@ DWORD WINAPI sos(void* p)
 		NULL);
 	return 0;
 }
+
+// http://www.kab-studio.biz/Programing/Codian/ShellExtension/05.html
+BOOL MakeList(IShellFolderPtr pSF, LPITEMIDLIST p_pFolderIDList)
+{
+	HRESULT		hRes;
+	ULONG		ulRetNo;
+	STRRET		stFileName;
+	LPITEMIDLIST	pFileIDList;
+	IShellFolderPtr	pCurFolder;
+	IEnumIDListPtr	pEnumIDList;
+	CString		cPrintStr;
+
+	if (p_pFolderIDList != NULL)
+	{
+		//　IShellFolderにバインドします。
+		hRes = pSF->BindToObject(p_pFolderIDList, NULL, IID_IShellFolder, (LPVOID *)&pCurFolder);
+		if (hRes != NOERROR)
+			return TRUE;
+	}
+	else
+	{
+		//　デスクトップフォルダを指定します。
+		hRes = ::SHGetDesktopFolder(&pCurFolder);
+		if (hRes != NOERROR)
+			return TRUE;
+	}
+
+	//　IEnumIDListを取得します。
+	hRes = pCurFolder->EnumObjects(NULL //GetSafeHwnd()
+		, SHCONTF_NONFOLDERS | SHCONTF_INCLUDEHIDDEN | SHCONTF_FOLDERS, &pEnumIDList);
+	if (hRes != NOERROR)
+		return FALSE;
+
+	//　IEnumIDListからアイテムＩＤを取得していきます。
+	while (pEnumIDList->Next(1, &pFileIDList, &ulRetNo) == NOERROR)
+	{
+		//　ファイルパスの取得。
+		hRes = pCurFolder->GetDisplayNameOf(pFileIDList
+			, SHGDN_FORPARSING, &stFileName);
+		if (hRes != NOERROR)
+			break;
+
+		//　文字列の変換。
+		// cPrintStr = TFileName(pFileIDList, &stFileName);
+
+		// TRACE("%s\n", (LPCTSTR)cPrintStr);
+
+		CoTaskMemFree(pFileIDList);
+	}
+
+	//pCurFolder->Release();
+
+	return TRUE;
+}
+
+
+LPITEMIDLIST GetItemIDList(IShellFolderPtr pSF, CString p_cFileStr)
+{
+	if (p_cFileStr.IsEmpty())
+		return NULL;
+
+	HRESULT		hRes;
+	ULONG		chEaten;	//文字列のサイズを受け取ります。
+	ULONG		dwAttributes;	//属性を受け取ります。
+	//OLECHAR		ochPath[MAX_PATH];	//ワイドバイト文字列です。
+	LPITEMIDLIST	pIDL;	//フォルダを示すアイテムＩＤです。
+
+	//　これをしないとインターフェイスはダメなのです。
+	// ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, p_cFileStr, -1, ochPath, MAX_PATH);
+
+	//　実際にITEMIDLISTを取得します。
+	
+	hRes = pSF->ParseDisplayName(NULL, NULL, p_cFileStr.GetBuffer(MAX_PATH), &chEaten, &pIDL, &dwAttributes);
+
+	if (hRes != NOERROR)
+		pIDL = NULL;
+
+	return pIDL;	//取得したアイテムＩＤを返します。
+}
+
+BOOL DoReveal(LPCTSTR pFolder)
+{
+	IShellFolderPtr pSF;
+	HRESULT hRes = ::SHGetDesktopFolder(&pSF);
+	if (!pSF)
+		return FALSE;
+
+	LPITEMIDLIST pIIL = GetItemIDList(pSF, pFolder);
+	if (!pIIL)
+		return FALSE;
+
+	if (!MakeList(pSF, pIIL))
+		return FALSE;
+
+	CoTaskMemFree(pSF);
+
+	return TRUE;
+}
+
 BOOL COpenNetworkFolderApp::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
@@ -63,6 +162,8 @@ BOOL COpenNetworkFolderApp::InitInstance()
 		AfxMessageBox(L"No Arguments");
 		return FALSE;
 	}
+
+	CString message;
 	for (int i = 1; i < __argc; ++i)
 	{
 		//HANDLE hFile = CreateFile(__targv[i],
@@ -73,16 +174,28 @@ BOOL COpenNetworkFolderApp::InitInstance()
 		//	FILE_FLAG_BACKUP_SEMANTICS | FILE_ATTRIBUTE_DIRECTORY,
 		//	NULL);
 		//CloseHandle(hFile);
+		message += __targv[i];
+		message += L" -> ";
 
-		LPTSTR p = _tcsdup(__targv[i]);
-		::CreateThread(NULL,
-			0,
-			sos,
-			(void*)p,
-			0,
-			NULL);
+		if (DoReveal(__targv[i]))
+		{
+			message += L"OK";
+		}
+		else
+		{
+			message += L"NG";
+		}
+		message += L"\r\n";
+		//LPTSTR p = _tcsdup(__targv[i]);
+		//::CreateThread(NULL,
+		//	0,
+		//	sos,
+		//	(void*)p,
+		//	0,
+		//	NULL);
 	}
-	::Sleep(30 * 1000);
+	// ::Sleep(30 * 1000);
+	AfxMessageBox(message, MB_ICONINFORMATION);
 	return FALSE;
 
 	CWinApp::InitInstance();
