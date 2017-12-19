@@ -117,7 +117,7 @@ LPITEMIDLIST GetItemIDList(IShellFolderPtr pSF, CString p_cFileStr)
 	// ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, p_cFileStr, -1, ochPath, MAX_PATH);
 
 	//　実際にITEMIDLISTを取得します。
-	
+
 	hRes = pSF->ParseDisplayName(NULL, NULL, p_cFileStr.GetBuffer(MAX_PATH), &chEaten, &pIDL, &dwAttributes);
 
 	if (hRes != NOERROR)
@@ -144,7 +144,31 @@ BOOL DoReveal(LPCTSTR pFolder)
 
 	return TRUE;
 }
+#include "../../TimedMessageBox/TimedMessageBox/TimedMessageBox.h"
 
+void ShowTimedMessage(LPCTSTR pMessage)
+{
+	HMODULE hModule = LoadLibrary(L"TimedMessageBox.dll");
+	if (!hModule)
+	{
+		AfxMessageBox(L"Failed to load TimedMessageBox.dll");
+		return;
+	}
+	FNTimedMessageBox2 func2 = NULL;
+	func2 = (FNTimedMessageBox2)GetProcAddress(hModule, "fnTimedMessageBox2");
+	if (!func2)
+	{
+		AfxMessageBox(L"Faied GetProcAddress");
+		return;
+	}
+	TIMEDMESSAGEBOX_PARAMS tp;
+	tp.size = sizeof(tp);
+	tp.flags = TIMEDMESSAGEBOX_FLAGS_POSITION | TIMEDMESSAGEBOX_FLAGS_SHOWCMD | TIMEDMESSAGEBOX_FLAGS_TOPMOST;
+	tp.hWndCenterParent = NULL;
+	tp.position = TIMEDMESSAGEBOX_POSITION_BOTTOMRIGHT;
+	tp.nShowCmd = SW_SHOWNOACTIVATE;
+	func2(NULL, 10, AfxGetAppName(), pMessage, &tp);
+}
 BOOL COpenNetworkFolderApp::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
@@ -195,7 +219,8 @@ BOOL COpenNetworkFolderApp::InitInstance()
 		//	NULL);
 	}
 	// ::Sleep(30 * 1000);
-	AfxMessageBox(message, MB_ICONINFORMATION);
+	// AfxMessageBox(message, MB_ICONINFORMATION);
+	ShowTimedMessage(message);
 	return FALSE;
 
 	CWinApp::InitInstance();
