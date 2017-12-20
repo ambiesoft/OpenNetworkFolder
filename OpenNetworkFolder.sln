@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenNetworkFolder", "OpenNetworkFolder\OpenNetworkFolder.vcxproj", "{1BE297E9-22DC-40D8-93B4-2BC9B7AA95B8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenNetworkFolder", "OpenNetworkFolder\OpenNetworkFolder.vcxproj", "{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1BE297E9-22DC-40D8-93B4-2BC9B7AA95B8}.Debug|Win32.ActiveCfg = Debug|Win32
-		{1BE297E9-22DC-40D8-93B4-2BC9B7AA95B8}.Debug|Win32.Build.0 = Debug|Win32
-		{1BE297E9-22DC-40D8-93B4-2BC9B7AA95B8}.Release|Win32.ActiveCfg = Release|Win32
-		{1BE297E9-22DC-40D8-93B4-2BC9B7AA95B8}.Release|Win32.Build.0 = Release|Win32
+		{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}.Debug|Win32.Build.0 = Debug|Win32
+		{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}.Release|Win32.ActiveCfg = Release|Win32
+		{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
