@@ -18,5 +18,13 @@
     <ClCompile Include="main.cpp">
       <Filter>2 Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\lsMisc\RevealFolder.cpp">
+      <Filter>2 Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\lsMisc\RevealFolder.h">
+      <Filter>1 Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
