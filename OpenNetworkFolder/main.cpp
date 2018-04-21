@@ -1,9 +1,9 @@
-
+ï»¿
 #include <Windows.h>
 
-
-
 #include <string>
+#include <vector>
+#include <process.h>    /* _beginthread, _endthread */  
 
 #include "../../TimedMessageBox/TimedMessageBox/TimedMessageBox.h"
 #include "../../lsMisc/RevealFolder.h"
@@ -39,12 +39,43 @@ void ShowTimedMessage(LPCTSTR pMessage)
 	func2(NULL, 10, APPNAME, pMessage, &tp);
 }
 
+class ThreadInfo {
+	wstring path_;
+	wstring result_;
+public:
+	ThreadInfo(const wstring& path):path_(path) {
+		result_=L"Timed out";
+	}
+
+	const wstring& path() const {
+		return path_;
+	}
+	const wstring& result() const {
+		return result_;
+	}
+	void setResult(const wstring& s) {
+		result_=s;
+	}
+};
+void __cdecl start(void* data)
+{
+	ThreadInfo* pInfo = (ThreadInfo*)data;
+	if (RevealFolder(pInfo->path().c_str()))
+	{
+		pInfo->setResult(L"OK");
+	}
+	else
+	{
+		pInfo->setResult(L"NG");
+	}
+    _endthread();
+}
 
 int WINAPI wWinMain(
-	HINSTANCE hInstance,      // Œ»İ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒnƒ“ƒhƒ‹
-	HINSTANCE hPrevInstance,  // ˆÈ‘O‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒnƒ“ƒhƒ‹
-	LPWSTR lpCmdLine,          // ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“
-	int nCmdShow              // •\¦ó‘Ô
+	HINSTANCE hInstance,      // ç¾åœ¨ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ«
+	HINSTANCE hPrevInstance,  // ä»¥å‰ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ«
+	LPWSTR lpCmdLine,          // ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³
+	int nCmdShow              // è¡¨ç¤ºçŠ¶æ…‹
 	)
 {
 	if (__argc <= 1)
@@ -54,27 +85,39 @@ int WINAPI wWinMain(
 	}
 
 	wstring message;
-	for (int i = 1; i < __argc; ++i, message += L"\r\n")
+	vector<HANDLE> handles;
+	vector<ThreadInfo*> infos;
+	for (int i = 1; i < __argc; ++i)
 	{
-		message += __wargv[i];
-		message += L" -> ";
-
 		wchar_t buff[MAX_PATH];
 		DWORD dwGFPN = GetFullPathName(__wargv[i], MAX_PATH, buff, NULL);
 		if (dwGFPN > MAX_PATH)
 		{
+			message += __wargv[i];
+			message += L" -> ";
 			message += L"NG (Too long path)";
+			message += L"\r\n";
 			continue;
 		}
 
-		if (RevealFolder(buff))
-		{
-			message += L"OK";
-		}
-		else
-		{
-			message += L"NG";
-		}
+		ThreadInfo* pInfo = new ThreadInfo(buff);
+		HANDLE hThread = (HANDLE)_beginthread(start,0,pInfo);
+		if(!hThread)
+			pInfo->setResult(L"Failed to create a thread.");
+		handles.push_back(hThread);
+		infos.push_back(pInfo);
+	}
+
+	WaitForMultipleObjects(handles.size(), &handles[0], TRUE, 20*1000);
+	for(size_t i=0; i < handles.size(); ++i)
+	{
+		// CloseHandle(handles[i]);
+		message += infos[i]->path();
+		message += L" -> ";
+		message += infos[i]->result();
+		message += L"\r\n";
+
+		delete infos[i];
 	}
 	ShowTimedMessage(message.c_str());
 	return 0;

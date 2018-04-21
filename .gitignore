@@ -1,3 +1,7 @@
+*.ncb
+*.suo
+*.sdf
+*.user
 Debug/
 Release/
 OpenNetworkFolder.sdf
