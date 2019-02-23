@@ -21,10 +21,19 @@
     <ClCompile Include="..\..\lsMisc\RevealFolder.cpp">
       <Filter>2 Source</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>2 Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lsMisc\RevealFolder.h">
       <Filter>1 Header</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>1 Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OpenNetworkFolder2010.vcxproj.filters" />
   </ItemGroup>
 </Project>

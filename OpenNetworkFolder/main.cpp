@@ -5,7 +5,7 @@
 #include <vector>
 #include <process.h>    /* _beginthread, _endthread */  
 
-#include "../../TimedMessageBox/TimedMessageBox/TimedMessageBox.h"
+#include "C:/Linkout/CommonDLL/TimedMessageBox.h"
 #include "../../lsMisc/RevealFolder.h"
 
 
@@ -60,13 +60,20 @@ public:
 void __cdecl start(void* data)
 {
 	ThreadInfo* pInfo = (ThreadInfo*)data;
-	if (RevealFolder(pInfo->path().c_str()))
+	try
 	{
-		pInfo->setResult(L"OK");
+		if (RevealFolder(pInfo->path().c_str()))
+		{
+			pInfo->setResult(L"OK");
+		}
+		else
+		{
+			pInfo->setResult(L"NG");
+		}
 	}
-	else
+	catch (...)
 	{
-		pInfo->setResult(L"NG");
+		pInfo->setResult(L"Exception");
 	}
     _endthread();
 }
