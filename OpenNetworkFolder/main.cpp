@@ -5,6 +5,7 @@
 #include <vector>
 #include <process.h>    /* _beginthread, _endthread */  
 
+#include "../../lsMisc/HighDPI.h"
 #include "C:/Linkout/CommonDLL/TimedMessageBox.h"
 #include "../../lsMisc/RevealFolder.h"
 
@@ -85,6 +86,8 @@ int WINAPI wWinMain(
 	int nCmdShow              // 表示状態
 	)
 {
+	Ambiesoft::InitHighDPISupport();
+
 	if (__argc <= 1)
 	{
 		MessageBox(NULL, L"No Arguments", APPNAME, MB_ICONEXCLAMATION);

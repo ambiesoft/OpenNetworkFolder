@@ -84,11 +84,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\lsMisc\HighDPI.cpp" />
     <ClCompile Include="..\..\lsMisc\RevealFolder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\lsMisc\HighDPI.h" />
     <ClInclude Include="..\..\lsMisc\RevealFolder.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
