@@ -85,13 +85,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lsMisc\HighDPI.cpp" />
+    <ClCompile Include="..\..\lsMisc\OpenCommon.cpp" />
     <ClCompile Include="..\..\lsMisc\RevealFolder.cpp" />
+    <ClCompile Include="..\..\lsMisc\stdosd\stdosd.cpp" />
+    <ClCompile Include="..\..\lsMisc\stdosd\stdosd_win.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lsMisc\HighDPI.h" />
+    <ClInclude Include="..\..\lsMisc\OpenCommon.h" />
     <ClInclude Include="..\..\lsMisc\RevealFolder.h" />
+    <ClInclude Include="..\..\lsMisc\stdosd\stdosd.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,15 @@
     <ClCompile Include="..\..\lsMisc\HighDPI.cpp">
       <Filter>2 Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\lsMisc\OpenCommon.cpp">
+      <Filter>2 Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lsMisc\stdosd\stdosd.cpp">
+      <Filter>2 Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lsMisc\stdosd\stdosd_win.cpp">
+      <Filter>2 Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lsMisc\RevealFolder.h">
@@ -36,6 +45,12 @@
       <Filter>1 Header</Filter>
     </ClInclude>
     <ClInclude Include="..\..\lsMisc\HighDPI.h">
+      <Filter>1 Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lsMisc\OpenCommon.h">
+      <Filter>1 Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lsMisc\stdosd\stdosd.h">
       <Filter>1 Header</Filter>
     </ClInclude>
   </ItemGroup>

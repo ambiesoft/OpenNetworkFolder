@@ -8,28 +8,32 @@
 #include "../../lsMisc/HighDPI.h"
 #include "C:/Linkout/CommonDLL/TimedMessageBox.h"
 #include "../../lsMisc/RevealFolder.h"
-
+#include "../../lsMisc/OpenCommon.h"
+#include "../../lsMisc/stdosd/stdosd.h"
 
 using namespace std;
 using namespace Ambiesoft;
+using namespace Ambiesoft::stdosd;
 
 
 
 #define APPNAME L"OpenNetworkFolder"
-void ShowTimedMessage(LPCTSTR pMessage)
+#define APPVERSION L"ver1.0.1"
+
+DWORD ShowTimedMessage(LPCTSTR pMessage)
 {
 	HMODULE hModule = LoadLibrary(L"TimedMessageBox.dll");
 	if (!hModule)
 	{
 		MessageBox(NULL, L"Failed to load TimedMessageBox.dll", APPNAME, MB_ICONEXCLAMATION);
-		return;
+		return IDCANCEL;
 	}
 	FNTimedMessageBox2 func2 = NULL;
 	func2 = (FNTimedMessageBox2)GetProcAddress(hModule, "fnTimedMessageBox2");
 	if (!func2)
 	{
 		MessageBox(NULL, L"Faied GetProcAddress", APPNAME, MB_ICONEXCLAMATION);
-		return;
+		return IDCANCEL;
 	}
 	TIMEDMESSAGEBOX_PARAMS tp;
 	tp.size = sizeof(tp);
@@ -37,7 +41,9 @@ void ShowTimedMessage(LPCTSTR pMessage)
 	tp.hWndCenterParent = NULL;
 	tp.position = TIMEDMESSAGEBOX_POSITION_BOTTOMRIGHT;
 	tp.nShowCmd = SW_SHOWNOACTIVATE;
-	func2(NULL, 10, APPNAME, pMessage, &tp);
+
+	wstring title = stdFormat(L"%s %s", APPNAME, APPVERSION);
+	return func2(NULL, 10, title.c_str(), pMessage, &tp);
 }
 
 class ThreadInfo {
@@ -79,6 +85,12 @@ void __cdecl start(void* data)
     _endthread();
 }
 
+wstring getHelpstring()
+{
+	wstring out;
+	out += stdGetFileName(stdGetModuleFileName()) + L" NetworkPath [NetworkPath...]";
+	return out;
+}
 int WINAPI wWinMain(
 	HINSTANCE hInstance,      // 現在のインスタンスのハンドル
 	HINSTANCE hPrevInstance,  // 以前のインスタンスのハンドル
@@ -90,8 +102,11 @@ int WINAPI wWinMain(
 
 	if (__argc <= 1)
 	{
-		MessageBox(NULL, L"No Arguments", APPNAME, MB_ICONEXCLAMATION);
-		return FALSE;
+		wstring message = L"No Arguments";
+		message += L"\r\n\r\n";
+		message += getHelpstring();
+		MessageBox(NULL, message.c_str(), APPNAME, MB_ICONEXCLAMATION);
+		return 1;
 	}
 
 	wstring message;
@@ -129,6 +144,11 @@ int WINAPI wWinMain(
 
 		delete infos[i];
 	}
-	ShowTimedMessage(message.c_str());
+	
+	DWORD ret = ShowTimedMessage(message.c_str());
+	if (ret == IDRETRY)
+	{
+		ReopenCommon(NULL);
+	}
 	return 0;
 }
