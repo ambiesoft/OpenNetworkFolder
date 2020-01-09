@@ -43,14 +43,16 @@ DWORD ShowTimedMessage(LPCTSTR pMessage)
 	tp.nShowCmd = SW_SHOWNOACTIVATE;
 
 	wstring title = stdFormat(L"%s %s", APPNAME, APPVERSION);
-	return func2(NULL, 10, title.c_str(), pMessage, &tp);
+	return func2(NULL, 30, title.c_str(), pMessage, &tp);
 }
 
 class ThreadInfo {
 	wstring path_;
 	wstring result_;
+	bool must_;
+	DWORD timeout_;
 public:
-	ThreadInfo(const wstring& path):path_(path) {
+	ThreadInfo(const wstring& path, bool must,DWORD timeout):path_(path),timeout_(timeout) {
 		result_=L"Timed out";
 	}
 
@@ -63,20 +65,44 @@ public:
 	void setResult(const wstring& s) {
 		result_=s;
 	}
+	bool must() const {
+		return must_;
+	}
+	DWORD timeout()const{
+		return timeout_;
+	}
 };
 void __cdecl start(void* data)
 {
 	ThreadInfo* pInfo = (ThreadInfo*)data;
 	try
 	{
-		if (RevealFolder(pInfo->path().c_str()))
+		DWORD lasttick = GetTickCount();
+		int timeout = pInfo->timeout();
+		do 
 		{
-			pInfo->setResult(L"OK");
-		}
-		else
-		{
-			pInfo->setResult(L"NG");
-		}
+			if (RevealFolder(pInfo->path().c_str()))
+			{
+				pInfo->setResult(L"OK");
+				break;
+			}
+			else
+			{
+				pInfo->setResult(L"NG");
+				if (!pInfo->must())
+				{
+					break;
+				}
+				else
+				{
+					// must
+					DWORD now = GetTickCount();
+					int timecost = now - lasttick;
+					timeout -= timecost;
+					lasttick = now;
+				}
+			}
+		} while (timeout >= 0);
 	}
 	catch (...)
 	{
@@ -88,7 +114,7 @@ void __cdecl start(void* data)
 wstring getHelpstring()
 {
 	wstring out;
-	out += stdGetFileName(stdGetModuleFileName()) + L" NetworkPath [NetworkPath...]";
+	out += stdGetFileName(stdGetModuleFileName()) + L"[-timeout sec] [-must] NetworkPath [[-must] NetworkPath...]";
 	return out;
 }
 int WINAPI wWinMain(
@@ -112,8 +138,40 @@ int WINAPI wWinMain(
 	wstring message;
 	vector<HANDLE> handles;
 	vector<ThreadInfo*> infos;
+
+	// find timeout
+	int timeout = -1;
 	for (int i = 1; i < __argc; ++i)
 	{
+		if (_wcsicmp(__wargv[i], L"-timeout")==0)
+		{
+			++i;
+			if (!__wargv[i])
+			{
+				wstring message = L"timeout must be specified";
+				message += L"\r\n\r\n";
+				message += getHelpstring();
+				MessageBox(NULL, message.c_str(), APPNAME, MB_ICONEXCLAMATION);
+				return 1;
+			}
+			timeout = _wtoi(__wargv[i]) * 1000;
+		}
+	}
+
+	for (int i = 1; i < __argc; ++i)
+	{
+		if (_wcsicmp(__wargv[i], L"-timeout") == 0)
+		{
+			i += 2;
+			continue;
+		}
+		bool must = false;
+	
+		if (_wcsicmp(__wargv[i], L"-must") == 0)
+		{
+			must = true;
+			++i;
+		}
 		wchar_t buff[MAX_PATH];
 		DWORD dwGFPN = GetFullPathName(__wargv[i], MAX_PATH, buff, NULL);
 		if (dwGFPN > MAX_PATH)
@@ -125,7 +183,7 @@ int WINAPI wWinMain(
 			continue;
 		}
 
-		ThreadInfo* pInfo = new ThreadInfo(buff);
+		ThreadInfo* pInfo = new ThreadInfo(buff,must,timeout);
 		HANDLE hThread = (HANDLE)_beginthread(start,0,pInfo);
 		if(!hThread)
 			pInfo->setResult(L"Failed to create a thread.");
@@ -133,7 +191,7 @@ int WINAPI wWinMain(
 		infos.push_back(pInfo);
 	}
 
-	WaitForMultipleObjects(handles.size(), &handles[0], TRUE, 20*1000);
+	WaitForMultipleObjects(handles.size(), &handles[0], TRUE, timeout);
 	for(size_t i=0; i < handles.size(); ++i)
 	{
 		// CloseHandle(handles[i]);
