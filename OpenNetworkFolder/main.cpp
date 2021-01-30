@@ -18,7 +18,7 @@ using namespace Ambiesoft::stdosd;
 
 
 #define APPNAME L"OpenNetworkFolder"
-#define APPVERSION L"ver1.0.1"
+#define APPVERSION L"ver2.0.1"
 
 DWORD ShowTimedMessage(LPCTSTR pMessage)
 {
@@ -118,10 +118,10 @@ wstring getHelpstring()
 	return out;
 }
 int WINAPI wWinMain(
-	HINSTANCE hInstance,      // 現在のインスタンスのハンドル
-	HINSTANCE hPrevInstance,  // 以前のインスタンスのハンドル
-	LPWSTR lpCmdLine,          // コマンドライン
-	int nCmdShow              // 表示状態
+	HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPWSTR lpCmdLine,
+	int nCmdShow
 	)
 {
 	Ambiesoft::InitHighDPISupport();

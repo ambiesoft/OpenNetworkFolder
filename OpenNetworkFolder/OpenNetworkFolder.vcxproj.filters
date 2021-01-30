@@ -54,7 +54,4 @@
       <Filter>1 Header</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="OpenNetworkFolder2010.vcxproj.filters" />
-  </ItemGroup>
 </Project>
