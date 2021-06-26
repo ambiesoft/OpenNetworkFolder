@@ -1,6 +1,7 @@
 ﻿
 #include <Windows.h>
 
+#include <cassert>
 #include <string>
 #include <vector>
 #include <process.h>    /* _beginthread, _endthread */  
@@ -18,7 +19,7 @@ using namespace Ambiesoft::stdosd;
 
 
 #define APPNAME L"OpenNetworkFolder"
-#define APPVERSION L"ver2.0.1"
+#define APPVERSION L"2.0.2"
 
 DWORD ShowTimedMessage(LPCTSTR pMessage)
 {
@@ -42,7 +43,7 @@ DWORD ShowTimedMessage(LPCTSTR pMessage)
 	tp.position = TIMEDMESSAGEBOX_POSITION_BOTTOMRIGHT;
 	tp.nShowCmd = SW_SHOWNOACTIVATE;
 
-	wstring title = stdFormat(L"%s %s", APPNAME, APPVERSION);
+	wstring title = stdFormat(L"%s v%s", APPNAME, APPVERSION);
 	return func2(NULL, 30, title.c_str(), pMessage, &tp);
 }
 
@@ -191,10 +192,10 @@ int WINAPI wWinMain(
 		infos.push_back(pInfo);
 	}
 
-	WaitForMultipleObjects(handles.size(), &handles[0], TRUE, timeout);
+	WaitForMultipleObjects(handles.size(), handles.data(), TRUE, timeout);
 	for(size_t i=0; i < handles.size(); ++i)
 	{
-		// CloseHandle(handles[i]);
+		assert(!infos[i]->result().empty());
 		message += infos[i]->path();
 		message += L" -> ";
 		message += infos[i]->result();
