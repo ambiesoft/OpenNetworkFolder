@@ -3,6 +3,7 @@
 *.suo
 *.sdf
 *.user
+*.aps
 Debug/
 Release/
 OpenNetworkFolder.sdf

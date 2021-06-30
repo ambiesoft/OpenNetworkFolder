@@ -56,10 +56,18 @@
     <ClInclude Include="..\..\lsMisc\stdosd\stdosd.h">
       <Filter>1 Header</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>1 Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="history.txt">
       <Filter>4 dist</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OpenNetworkFolder.rc">
+      <Filter>3 Resource</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

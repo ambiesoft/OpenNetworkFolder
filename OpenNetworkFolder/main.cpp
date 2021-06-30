@@ -19,7 +19,7 @@ using namespace Ambiesoft::stdosd;
 
 
 #define APPNAME L"OpenNetworkFolder"
-#define APPVERSION L"2.0.2"
+#define APPVERSION L"2.0.3"
 
 DWORD ShowTimedMessage(LPCTSTR pMessage)
 {
