@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenNetworkFolder", "OpenNetworkFolder\OpenNetworkFolder.vcxproj", "{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zzzDist", "zzzDist\zzzDist.vcxproj", "{84ECAB17-7C38-4D51-AFE9-BC6491CD17A5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC} = {1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -15,8 +20,15 @@ Global
 		{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}.Debug|Win32.Build.0 = Debug|Win32
 		{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}.Release|Win32.ActiveCfg = Release|Win32
 		{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}.Release|Win32.Build.0 = Release|Win32
+		{84ECAB17-7C38-4D51-AFE9-BC6491CD17A5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{84ECAB17-7C38-4D51-AFE9-BC6491CD17A5}.Debug|Win32.Build.0 = Debug|Win32
+		{84ECAB17-7C38-4D51-AFE9-BC6491CD17A5}.Release|Win32.ActiveCfg = Release|Win32
+		{84ECAB17-7C38-4D51-AFE9-BC6491CD17A5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {927B3179-9904-4221-94A2-BDA50FB93895}
 	EndGlobalSection
 EndGlobal

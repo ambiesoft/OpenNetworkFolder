@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -11,9 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1BEF0C55-1AF5-4258-8FD0-DC05EADE5FFC}</ProjectGuid>
+    <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>OpenNetworkFolder</RootNamespace>
+    <ProjectGuid>{84ecab17-7c38-4d51-afe9-bc6491cd17a5}</ProjectGuid>
+    <RootNamespace>zzzDist</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -27,11 +28,13 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -42,76 +45,74 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformToolset)\$(ProjectName)\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformToolset)\OpenNetworkFolder\</OutDir>
     <IntDir>$(Configuration)\$(PlatformToolset)\$(PlatformName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformToolset)\$(ProjectName)\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformToolset)\OpenNetworkFolder\</OutDir>
     <IntDir>$(Configuration)\$(PlatformToolset)\$(PlatformName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;../../lsMisc/stlsoft/include/</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>
+      <Command>copy C:\Linkout\CommonDLL\TimedMessageBox.dll "$(TargetDir)"
+
+C:\LegacyPrograms\FFC\FFC.exe /t12 "$(UniversalCRTSdkDir)Redist\$(TargetPlatformVersion)\ucrt\DLLs\$(PlatformTarget)\*" /to:"$(OutDir)"
+dir /B /s "$(UniversalCRTSdkDir)Redist\$(TargetPlatformVersion)\ucrt\DLLs\$(PlatformTarget)\" &gt;&gt; "$(OutDir)RedistCopied.txt"
+
+C:\LegacyPrograms\FFC\FFC.exe /t12 "$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PlatformTarget)\Microsoft.VC$(PlatformToolsetVersion).CRT\*" /to:"$(OutDir)"
+dir /B /s "$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PlatformTarget)\Microsoft.VC$(PlatformToolsetVersion).CRT\" &gt;&gt; "$(OutDir)RedistCopied.txt"
+
+
+copy "$(SolutionDir)OpenNetworkFolder\history.txt" "$(TargetDir)"
+
+del "$(TargetDir)zzzDist.*"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;../../lsMisc/stlsoft/include/</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>
+      <Command>copy C:\Linkout\CommonDLL\TimedMessageBox.dll "$(TargetDir)"
+
+C:\LegacyPrograms\FFC\FFC.exe /t12 "$(UniversalCRTSdkDir)Redist\$(TargetPlatformVersion)\ucrt\DLLs\$(PlatformTarget)\*" /to:"$(OutDir)"
+dir /B /s "$(UniversalCRTSdkDir)Redist\$(TargetPlatformVersion)\ucrt\DLLs\$(PlatformTarget)\" &gt;&gt; "$(OutDir)RedistCopied.txt"
+
+C:\LegacyPrograms\FFC\FFC.exe /t12 "$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PlatformTarget)\Microsoft.VC$(PlatformToolsetVersion).CRT\*" /to:"$(OutDir)"
+dir /B /s "$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PlatformTarget)\Microsoft.VC$(PlatformToolsetVersion).CRT\" &gt;&gt; "$(OutDir)RedistCopied.txt"
+
+
+copy "$(SolutionDir)OpenNetworkFolder\history.txt" "$(TargetDir)"
+
+del "$(TargetDir)zzzDist.*"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\lsMisc\HighDPI.cpp" />
-    <ClCompile Include="..\..\lsMisc\OpenCommon.cpp" />
-    <ClCompile Include="..\..\lsMisc\RevealFolder.cpp" />
-    <ClCompile Include="..\..\lsMisc\stdosd\stdosd.cpp" />
-    <ClCompile Include="..\..\lsMisc\stdosd\stdosd_win.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\lsMisc\HighDPI.h" />
-    <ClInclude Include="..\..\lsMisc\OpenCommon.h" />
-    <ClInclude Include="..\..\lsMisc\RevealFolder.h" />
-    <ClInclude Include="..\..\lsMisc\stdosd\stdosd.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="stdafx.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="history.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="OpenNetworkFolder.rc" />
+    <ClCompile Include="zzzDist.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
