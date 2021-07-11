@@ -192,7 +192,26 @@ int WINAPI wWinMain(
 		infos.push_back(pInfo);
 	}
 
-	WaitForMultipleObjects(handles.size(), handles.data(), TRUE, timeout);
+	DWORD dwWaited = WaitForMultipleObjects(handles.size(), handles.data(), TRUE, timeout);
+	if (dwWaited == WAIT_TIMEOUT || dwWaited== WAIT_FAILED)
+	{
+		for_each(handles.begin(), handles.end(), [](HANDLE h) {
+			TerminateThread(h, -1);
+			});
+		if (dwWaited == WAIT_FAILED)
+		{
+			MessageBox(NULL, L"Wait Failed", APPNAME, MB_ICONEXCLAMATION);
+			return 1;
+		}
+	}
+	else if(WAIT_ABANDONED_0 <= dwWaited && dwWaited <= (WAIT_ABANDONED_0 +handles.size()))
+	{
+		
+	}
+	else if (WAIT_OBJECT_0 <= dwWaited && dwWaited <= (WAIT_OBJECT_0 + handles.size()))
+	{
+
+	}
 	for(size_t i=0; i < handles.size(); ++i)
 	{
 		assert(!infos[i]->result().empty());
