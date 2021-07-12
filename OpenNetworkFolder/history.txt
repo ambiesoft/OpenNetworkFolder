@@ -1,4 +1,7 @@
-﻿2021/07/12 v2.0.4
+﻿2021/07/12 v2.0.5
+Version info in the title bar was incorrect
+
+2021/07/12 v2.0.4
 Fix: Crashed when timeout happened
 
 2021/07/01 v2.0.3

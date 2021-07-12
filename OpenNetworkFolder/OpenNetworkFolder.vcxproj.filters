@@ -39,6 +39,9 @@
     <ClCompile Include="..\..\lsMisc\stdosd\stdosd_win.cpp">
       <Filter>2 Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\lsMisc\GetVersionString.cpp">
+      <Filter>2 Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lsMisc\RevealFolder.h">
@@ -57,6 +60,9 @@
       <Filter>1 Header</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>1 Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lsMisc\GetVersionString.h">
       <Filter>1 Header</Filter>
     </ClInclude>
   </ItemGroup>

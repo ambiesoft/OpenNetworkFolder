@@ -11,6 +11,7 @@
 #include "../../lsMisc/RevealFolder.h"
 #include "../../lsMisc/OpenCommon.h"
 #include "../../lsMisc/stdosd/stdosd.h"
+#include "../../lsMisc/GetVersionString.h"
 
 using namespace std;
 using namespace Ambiesoft;
@@ -19,7 +20,6 @@ using namespace Ambiesoft::stdosd;
 
 
 #define APPNAME L"OpenNetworkFolder"
-#define APPVERSION L"2.0.3"
 
 DWORD ShowTimedMessage(LPCTSTR pMessage)
 {
@@ -43,7 +43,9 @@ DWORD ShowTimedMessage(LPCTSTR pMessage)
 	tp.position = TIMEDMESSAGEBOX_POSITION_BOTTOMRIGHT;
 	tp.nShowCmd = SW_SHOWNOACTIVATE;
 
-	wstring title = stdFormat(L"%s v%s", APPNAME, APPVERSION);
+	wstring title = stdFormat(L"%s v%s",
+		APPNAME,
+		GetVersionString(stdGetModuleFileName().c_str(), 3).c_str());
 	return func2(NULL, 30, title.c_str(), pMessage, &tp);
 }
 
