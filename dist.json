@@ -6,7 +6,7 @@
     "targets": [
         {
             "setoutdirforbuild": false,
-            "outdir": "Release\\v142\\OpenNetworkFolder\\",
+            "outdir": "Release\\v143\\OpenNetworkFolder\\",
             "platform": "Win32"
         }
     ],
